@@ -30,7 +30,24 @@ plt.show()
 
 ### your code here!  name your classifier object clf if you want the 
 ### visualization code (prettyPicture) to show you the decision boundary
+from time import time
 
+### AdaBoost
+#from sklearn.ensemble import AdaBoostClassifier
+#clf = AdaBoostClassifier(n_estimators=20, learning_rate = 0.8)
+
+### Rndom Forest
+from sklearn.ensemble import RandomForestClassifier
+clf = RandomForestClassifier(n_estimators = 20, min_samples_split = 50, min_impurity_decrease = 0.01)
+t0 = time()
+clf.fit(features_train, labels_train)
+t1 = time()
+print "Model fitting time:", round(t1-t0, 3), "s"
+pred = clf.predict(features_test)
+print "Prediction time:", round(time()-t1, 3), "s"
+from sklearn.metrics import accuracy_score
+accuracy = accuracy_score(labels_test, pred)
+print accuracy
 
 
 
