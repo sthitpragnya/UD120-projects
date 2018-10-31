@@ -69,7 +69,7 @@ from sklearn.cluster import KMeans
 kmeans = KMeans(n_clusters=2).fit(finance_features)
 pred = kmeans.predict(finance_features)
 
-finance_features.sort(key = lambda list:list[0])
+#finance_features.sort(key = lambda list:list[0])
 
 ### rename the "name" parameter when you change the number of features
 ### so that the figure gets saved to a different file
