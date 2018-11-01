@@ -42,22 +42,24 @@ for name, from_person in [("sara", from_sara), ("chris", from_chris)]:
         ### only look at first 200 emails when developing
         ### once everything is working, remove this line to run over full dataset
         temp_counter += 1
-        if temp_counter < 200:
-            path = os.path.join('..', path[:-1])
-            print path
-            email = open(path, "r")
+#        if temp_counter < 200:
+        path = os.path.join('..', path[:-1])
+        print path
+        email = open(path, "r")
 
-            ### use parseOutText to extract the text from the opened email
+        ### use parseOutText to extract the text from the opened email
+        email_words = parseOutText(email)
+        ### use str.replace() to remove any instances of the words
+        ### ["sara", "shackleton", "chris", "germani"]
+        remove_list = ["sara", "shackleton", "chris", "germani"]
+        for remove_word in remove_list:
+            email_words = email_words.replace(remove_word, "")
+        ### append the text to word_data
+        word_data.append(email_words.encode('ascii'))
+        ### append a 0 to from_data if email is from Sara, and 1 if email is from Chris
+        from_data.append(0 if name=="sara" else 1)
 
-            ### use str.replace() to remove any instances of the words
-            ### ["sara", "shackleton", "chris", "germani"]
-
-            ### append the text to word_data
-
-            ### append a 0 to from_data if email is from Sara, and 1 if email is from Chris
-
-
-            email.close()
+        email.close()
 
 print "emails processed"
 from_sara.close()
@@ -71,5 +73,15 @@ pickle.dump( from_data, open("your_email_authors.pkl", "w") )
 
 
 ### in Part 4, do TfIdf vectorization here
+#from nltk.corpus import stopwords
+#sw = stopwords.words("english")
+#for w in word_data:
+#    for remove_word in sw:
+#        w.replace(remove_word, "")                
+from sklearn.feature_extraction.text import TfidfVectorizer
+vectorizer = TfidfVectorizer(stop_words="english", lowercase=True)
+vectorizer.fit_transform(word_data)
+vocab_list = vectorizer.get_feature_names()
 
-
+print(len(vocab_list))
+print(vocab_list[34597])
